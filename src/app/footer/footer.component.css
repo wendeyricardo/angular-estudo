@@ -1,8 +1,9 @@
-.app-footer-container{
+.footer-container{
+    display: flex;
+    flex-direction: row;
     justify-content: flex-end;
-}
-
-.app-footer-container span {
-    font-weight: bold;
-    font-size: 14px;
-}
+  }
+  
+  .footer-container div{
+    font-size: 12px;
+  }

@@ -2,23 +2,29 @@
 
     <app-header [sidenav]="sidenav"></app-header>
 
-    <mat-sidenav-container>
+    <mat-sidenav-container class="sidenav-container">
         <mat-sidenav #sidenav class="w-10p">
             <mat-list>
-                <mat-list-item (click)="sidenav.toggle()">
+                <mat-list-item>
                     <mat-icon>home</mat-icon>
                     <span class="ml-15">
-                        <a href="/">Home</a>Home
-                    </span>
-                    
+                        <a [routerLink]="['/']" (click)="sidenav.toggle()">Home</a>
+                    </span>                    
+                </mat-list-item>
+
+                <mat-divider></mat-divider>
+
+                <mat-list-item>
+                    <mat-icon>list</mat-icon>
+                    <span class="ml-15">
+                        <a [routerLink]="['/categoria']" (click)="sidenav.toggle()">Categoria</a>
+                    </span>                    
                 </mat-list-item>
             </mat-list>
         </mat-sidenav>
 
-        <mat-sidenav-content>
+        <mat-sidenav-content>            
             
-            <h1>Isso é uma aplicação de teste do curso de angular</h1>
-
             <router-outlet></router-outlet>
 
         </mat-sidenav-content>
