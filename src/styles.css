@@ -31,3 +31,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .flx-evly{
     justify-content: space-evenly;
 }
+
+.w-300{
+    width: 300px;
+}

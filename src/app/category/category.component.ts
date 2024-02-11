@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Category } from '../_models/category';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
+import { CategoryEditComponent } from '../category-edit/category-edit.component';
 
 export const CATEGORY_DATA = [
   { name: 'Educação', guid: 'aaaa-bbbb-cccc-dddd' },
@@ -25,8 +26,14 @@ export class CategoryComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public editCategory(category: Category) {
+  public editCategory(inputCategory: Category) {
     console.log('edit new category clicked');
+
+    this.dialog.open(CategoryEditComponent, {disableClose: true, data: { editableCategory: inputCategory}
+    }).afterClosed().subscribe(resp =>{
+      console.log('categoria apagada com sucesso');
+    })
+        
   }
 
   public deleteCategory(category: Category) {
