@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { inject } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Category } from '../_models/category';
 
 @Component({
   selector: 'app-category-edit',
@@ -9,9 +10,23 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class CategoryEditComponent implements OnInit {
 
-  constructor(private dialogRef: MatDialogRef<CategoryEditComponent>, @Inject(MAT_DIALOG_DATA) dialogData: any) { }
+  public editableCategory!: Category;
+  public actionName: string = 'Editar';
+
+  constructor(private dialogRef: MatDialogRef<CategoryEditComponent>, @Inject(MAT_DIALOG_DATA) dialogData: any) { 
+    if(dialogData.editableCategory != null){
+      this.editableCategory = dialogData.editableCategory;
+    }
+    if(dialogData.actionName =! null){
+      this.actionName = dialogData.actionName;
+    }
+  }
 
   ngOnInit(): void {
+  }
+
+  public closeModalWindow($event: any){
+    if($event != null) this.dialogRef.close($event);
   }
 
 }

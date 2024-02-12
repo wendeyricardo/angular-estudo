@@ -31,7 +31,7 @@ export class CategoryComponent implements OnInit {
 
     this.dialog.open(CategoryEditComponent, {disableClose: true, data: { editableCategory: inputCategory}
     }).afterClosed().subscribe(resp =>{
-      console.log('categoria apagada com sucesso');
+      console.log('Modal editar fechada');
     })
         
   }
@@ -52,6 +52,11 @@ export class CategoryComponent implements OnInit {
 
   public createNewCategory() {
     console.log('create new category clicked');
+
+    this.dialog.open(CategoryEditComponent, {disableClose: true, data: { actionName: 'Criar'}
+    }).afterClosed().subscribe(resp =>{
+      console.log('Modal criar fechada');
+    })
   }
 
 }
