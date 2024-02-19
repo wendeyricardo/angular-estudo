@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { CheckListItem } from '../_models/checklist_item';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { Category } from '../_models/category';
+import { CATEGORY_DATA } from '../category/category.component';
 
 @Component({
   selector: 'app-checklist-form',
@@ -13,14 +15,18 @@ export class ChecklistFormComponent implements OnInit {
   @Input() public checkListitem!: CheckListItem;
   @Output() public formCloseEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  @ViewChild(FormGroupDirective) checklistFormGroupDirective!: FormGroupDirective;
 
-  public checkListForm!: FormGroup;
+  public categories: Category[]  = CATEGORY_DATA;
+
+
+  public checklistForm!: FormGroup;
 
 
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.checkListForm = this.formBuilder.group(
+    this.checklistForm = this.formBuilder.group(
       {
         completed: [this.checkListitem != null ? this.checkListitem.completed : false, Validators.required],
         description: [this.checkListitem != null ? this.checkListitem.description : '', Validators.required],
@@ -30,8 +36,23 @@ export class ChecklistFormComponent implements OnInit {
     );
   }
 
+  public clearForm(){
+    this.checklistForm.reset();
+    this.checklistFormGroupDirective.resetForm();
+
+  }
+
   public closeForm(){
 
+  }
+
+  public save(){
+    this.clearForm();
+
+  }
+
+  public cancel(){
+    
   }
 
 }
