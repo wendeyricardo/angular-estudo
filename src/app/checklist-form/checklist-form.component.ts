@@ -42,16 +42,12 @@ export class ChecklistFormComponent implements OnInit {
 
   }
 
-  public closeForm(){
-
-  }
-
   public save(){
-    this.clearForm();
-
+    this.formCloseEvent.emit(true);
   }
 
   public cancel(){
+    this.formCloseEvent.emit(false);
     
   }
 

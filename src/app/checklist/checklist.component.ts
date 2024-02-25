@@ -44,17 +44,17 @@ export class ChecklistComponent implements OnInit {
     console.log('status alterado $(status)');
   }
 
-  public updateChecklistItem(checklist: ChecklistComponent){
+  public updateChecklistItem(checkListItem: CheckListItem){
     console.log('atualizando item do checklist');
 
     this.dialog.open(ChecklistEditComponent, {
-      disableClose: true, data:{ updatableChecklistItem: CheckListItem, actionName: 'Editar'},
+      disableClose: true, data:{ updatableChecklistItem: checkListItem, actionName: 'Editar'},
     }).afterClosed().subscribe( resp => {
       console.log('fechando modal edição');
     });
   }
 
-  public deleteChecklistItem(checklist: ChecklistComponent){
+  public deleteChecklistItem(checkListItem: CheckListItem){
     console.log('deletando item do checklist');
 
     this.dialog.open(DialogComponent, {disableClose: true,
