@@ -1,18 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CATEGORY_DATA } from '../category/category.component';
 import { DialogComponent } from '../dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ChecklistEditComponent } from '../checklist-edit/checklist-edit.component';
+import { ChecklistService } from '../services/checklist.service';
 import { CheckListItem } from '../_models/checklist_item';
-
-export const CHECKLIST_DATA = [
-  { guid: 'aaa-bbb-ccc-ddd', completed: false, description: 'ir ao ortopedista', deadline: Date.now(), postDate: Date.now(),
-  category: CATEGORY_DATA.find(x =>x.name=='Saúde')
- },
- { guid: 'aaa-bbb-ccc-ddd', completed: true, description: 'Reunião com o time', deadline: Date.now(), postDate: Date.now(),
-  category: CATEGORY_DATA.find(x =>x.name=='Trabalho')
- },
-]
 
 @Component({
   selector: 'app-checklist',
@@ -21,13 +12,19 @@ export const CHECKLIST_DATA = [
 })
 export class ChecklistComponent implements OnInit {
 
-  public dataSource = CHECKLIST_DATA;
+  public dataSource: CheckListItem[] = [];
 
   public displayedColumns: string[] = ['id','completed', 'description', 'deadline', 'postDate', 'category', 'actions'];
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, private checklistService: ChecklistService) { }
 
   ngOnInit(): void {
+    this.checklistService.getAllChecklistItems().subscribe(
+      (resp: CheckListItem[]) =>  {
+        this.dataSource = resp;
+      }, (error: any) => {
+          console.log(`Ocorreu um erro ao chamar a API: ${error}`);
+      });
   }
   
   public createNewItem(){
