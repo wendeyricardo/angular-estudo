@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ChecklistEditComponent } from '../checklist-edit/checklist-edit.component';
 import { ChecklistService } from '../services/checklist.service';
 import { CheckListItem } from '../_models/checklist_item';
+import { SnackBarService } from '../services/snack-bar.service';
 
 @Component({
   selector: 'app-checklist',
@@ -16,7 +17,7 @@ export class ChecklistComponent implements OnInit {
 
   public displayedColumns: string[] = ['id','completed', 'description', 'deadline', 'postDate', 'category', 'actions'];
 
-  constructor(private dialog: MatDialog, private checklistService: ChecklistService) { }
+  constructor(private dialog: MatDialog, private checklistService: ChecklistService, private snackBarService: SnackBarService) { }
 
   ngOnInit(): void {
     this.checklistService.getAllChecklistItems().subscribe(
@@ -34,6 +35,10 @@ export class ChecklistComponent implements OnInit {
       disableClose: true, data:{ actionName: 'Criar'},
     }).afterClosed().subscribe( resp => {
       console.log('fechando modal criação');
+      
+      if (resp) {
+        this.snackBarService.showSnackBar('Item do CheckList criado com sucesso!', 'OK');
+      } 
     });
   }
   
@@ -48,6 +53,10 @@ export class ChecklistComponent implements OnInit {
       disableClose: true, data:{ updatableChecklistItem: checkListItem, actionName: 'Editar'},
     }).afterClosed().subscribe( resp => {
       console.log('fechando modal edição');
+
+      if (resp) {
+        this.snackBarService.showSnackBar('Item do CheckList editado com sucesso!', 'OK');
+      } 
     });
   }
 
@@ -59,6 +68,10 @@ export class ChecklistComponent implements OnInit {
       leftButtonLabel: 'Cancelar', rightButtonLabel: 'Ok'}
     }).afterClosed().subscribe(resp => {
           console.log('janela modal confirmar apagada fechada');
+
+          if (resp) {
+            this.snackBarService.showSnackBar('Item do CheckList apagado com sucesso!', 'OK');
+          } 
       });    
   }
 

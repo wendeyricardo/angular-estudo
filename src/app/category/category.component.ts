@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { CategoryEditComponent } from '../category-edit/category-edit.component';
 import { CategoryService } from '../services/category.service';
+import { SnackBarService } from '../services/snack-bar.service';
 
 
 @Component({
@@ -16,7 +17,7 @@ export class CategoryComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'actions'];
   public dataSource: Category[] = [];
 
-  constructor(private dialog: MatDialog, private categoryServices: CategoryService) { }
+  constructor(private dialog: MatDialog, private categoryServices: CategoryService, private snackBarService: SnackBarService) { }
 
   ngOnInit(): void {
     this.categoryServices.getAllCategories().subscribe(
@@ -33,6 +34,9 @@ export class CategoryComponent implements OnInit {
     this.dialog.open(CategoryEditComponent, {disableClose: true, data: { editableCategory: inputCategory}
     }).afterClosed().subscribe(resp =>{
       console.log('Modal editar fechada');
+      if (resp) {
+        this.snackBarService.showSnackBar('Categoria editada com sucesso!', 'OK');
+      } 
     })
         
   }
@@ -43,6 +47,7 @@ export class CategoryComponent implements OnInit {
       leftButtonLabel: 'Cancelar', rightButtonLabel: 'Sim'}}).afterClosed().subscribe(
       resp => {
         if (resp) {
+          this.snackBarService.showSnackBar('Categoria apagada com sucesso!', 'OK');
           console.log('categoria apagada com sucesso');
         } else {
           console.log('categoria não apagada');
@@ -57,6 +62,9 @@ export class CategoryComponent implements OnInit {
     this.dialog.open(CategoryEditComponent, {disableClose: true, data: { actionName: 'Criar'}
     }).afterClosed().subscribe(resp =>{
       console.log('Modal criar fechada');
+       if (resp) {
+          this.snackBarService.showSnackBar('Categoria criada com sucesso!', 'OK');
+        } 
     })
   }
 
