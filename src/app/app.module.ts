@@ -16,6 +16,7 @@ import { CategoryFormComponent } from './category-form/category-form.component';
 import { ChecklistComponent } from './checklist/checklist.component';
 import { ChecklistEditComponent } from './checklist-edit/checklist-edit.component';
 import { ChecklistFormComponent } from './checklist-form/checklist-form.component';
+import { HttpClientModule } from '@angular/common/http';
 
 //configurar pt-BR locale
 import { LOCALE_ID, NgModule } from '@angular/core';
@@ -36,7 +37,7 @@ registerLocaleData(localePt)
     CategoryFormComponent,
     ChecklistComponent,
     ChecklistEditComponent,
-    ChecklistFormComponent
+    ChecklistFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,7 +45,8 @@ registerLocaleData(localePt)
     FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule    
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'pt-BR'}
