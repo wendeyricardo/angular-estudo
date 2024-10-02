@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Category } from '../_models/category';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent } from '../dialog/dialog.component';
 import { CategoryEditComponent } from '../category-edit/category-edit.component';
+import { DialogComponent } from '../dialog/dialog.component';
 import { CategoryService } from '../services/category.service';
 import { SnackBarService } from '../services/snack-bar.service';
+import { Category } from '../_models/category';
 
 
 @Component({
@@ -14,58 +14,60 @@ import { SnackBarService } from '../services/snack-bar.service';
 })
 export class CategoryComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'actions'];
+  public displayedColumns: string[] = ['id', 'name', 'actions'];
   public dataSource: Category[] = [];
 
-  constructor(private dialog: MatDialog, private categoryServices: CategoryService, private snackBarService: SnackBarService) { }
+  constructor(private dialog: MatDialog, private categoryService: CategoryService, private snackBarService: SnackBarService) { }
 
   ngOnInit(): void {
-    this.categoryServices.getAllCategories().subscribe(
-      (resp: Category[]) => {
-        this.dataSource =  resp;
-
-      }
-    )
+    this.loadAllCategories();
   }
 
-  public editCategory(inputCategory: Category) {
-    console.log('edit new category clicked');
-
-    this.dialog.open(CategoryEditComponent, {disableClose: true, data: { editableCategory: inputCategory}
-    }).afterClosed().subscribe(resp =>{
-      console.log('Modal editar fechada');
-      if (resp) {
-        this.snackBarService.showSnackBar('Categoria editada com sucesso!', 'OK');
-      } 
+  private loadAllCategories(){
+    this.categoryService.getAllCategories().subscribe((resp: Category[]) => {
+      this.dataSource = resp;
+    }, (error: any) => {
+      console.log(`Um erro ocorreu para chamar a API ${error}`);
     })
-        
   }
 
-  public deleteCategory(category: Category) {
-    this.dialog.open(DialogComponent, {disableClose: true,
-      data: {dialogMsg: 'Você tem certeza que gostaria de apagar a categoria?',
-      leftButtonLabel: 'Cancelar', rightButtonLabel: 'Sim'}}).afterClosed().subscribe(
-      resp => {
-        if (resp) {
-          this.snackBarService.showSnackBar('Categoria apagada com sucesso!', 'OK');
-          console.log('categoria apagada com sucesso');
-        } else {
-          console.log('categoria não apagada');
+  public editCategory(inputCategory: Category){
+    this.dialog.open(CategoryEditComponent, { disableClose: true, data : { editableCategory: inputCategory }
+    }).afterClosed().subscribe(resp => {
+      if(resp) {
+        this.loadAllCategories();
+        this.snackBarService.showSnackBar('Categoria editada com successo!', 'OK');
+      }
+    });
+
+  }
+
+  public deleteCategory(category: Category){
+    this.dialog.open(DialogComponent, { disableClose: true, data : {
+      msg: 'Você tem certeza que deseja apagar essa categoria?', leftButton: 'Cancelar', rightButton: 'OK'
+    }}).afterClosed().subscribe(resp => {
+        if(resp) {
+
+          this.categoryService.deleteCategory(category.guid).subscribe(
+            (resp: any) => {
+              this.loadAllCategories();
+              this.snackBarService.showSnackBar('Categoria apagada com successo!', 'OK');
+            }, (err: any) => {
+              this.snackBarService.showSnackBar('Não é possível apagar a categoria pois está uso por um item de checklist!', 'OK');
+            }
+          )
         }
-      }
-    )
+    });
+
   }
 
-  public createNewCategory() {
-    console.log('create new category clicked');
-
-    this.dialog.open(CategoryEditComponent, {disableClose: true, data: { actionName: 'Criar'}
-    }).afterClosed().subscribe(resp =>{
-      console.log('Modal criar fechada');
-       if (resp) {
-          this.snackBarService.showSnackBar('Categoria criada com sucesso!', 'OK');
-        } 
-    })
+  public createNewCategory(){
+      this.dialog.open(CategoryEditComponent, { disableClose: true, data : { actionName: 'Criar' }
+      }).afterClosed().subscribe(resp => {
+        if(resp) {
+          this.loadAllCategories();
+          this.snackBarService.showSnackBar('Categoria criada com successo!', 'OK');
+        }
+      });
   }
-
 }

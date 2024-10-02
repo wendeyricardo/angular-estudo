@@ -12,18 +12,22 @@ export class ChecklistService {
   constructor(private httpClient: HttpClient) { }
 
   public getAllChecklistItems(): Observable<CheckListItem[]>{
-      return this.httpClient.get<CheckListItem[]>(`${environment.apiBaseEndPointUrl}checklist-items`)
-  }
+    return this.httpClient.get<CheckListItem[]>(`${environment.apiBaseEndPointUrl}checklist-items`);
+}
 
-  public saveChecklistItems(CheckListItem: CheckListItem): Observable<string>{
-    return this.httpClient.post<string>(`${environment.apiBaseEndPointUrl}checklist-items`, CheckListItem)
-  }
+public saveChecklistItem(checklistItem: CheckListItem): Observable<string>{
+  return this.httpClient.post<string>(`${environment.apiBaseEndPointUrl}checklist-items`, checklistItem);
+}
 
-  public updateChecklistItems(CheckListItem: CheckListItem): Observable<CheckListItem[]>{
-    return this.httpClient.put<CheckListItem[]>(`${environment.apiBaseEndPointUrl}checklist-items`, CheckListItem)
-  }
+public updateChecklistItems(checklistItem: CheckListItem) : Observable<void>{
+  return this.httpClient.put<void>(`${environment.apiBaseEndPointUrl}checklist-items`, checklistItem);
+}
 
-  public deleteChecklistItems(guid: string): Observable<void>{
-    return this.httpClient.get<void>(`${environment.apiBaseEndPointUrl}checklist-items/${guid}`)
-  }
+public deleteChecklistItem(guid: string): Observable<void>{
+  return this.httpClient.delete<void>(`${environment.apiBaseEndPointUrl}checklist-items/${guid}`);
+}
+
+public updateCompleteStatus(guid: string, status: boolean) : Observable<void>{
+  return this.httpClient.patch<void>(`${environment.apiBaseEndPointUrl}checklist-items/${guid}`, { isComplete: status});
+}
 }
